@@ -1,0 +1,235 @@
+Experiment: Implement a FIFO Queue Using Two Stacks
+1. Aim
+
+To implement a First In First Out (FIFO) Queue using only two stacks and perform the basic queue operations:
+
+push()
+pop()
+peek()
+empty()
+2. Objective
+
+The objectives of this experiment are:
+
+To understand the difference between Stack (LIFO) and Queue (FIFO).
+To implement a queue using two stacks.
+To perform insertion and deletion operations on the queue.
+To understand the concept of amortized time complexity.
+3. Theory
+Queue
+
+A queue is a linear data structure that follows the FIFO (First In First Out) principle.
+
+The element inserted first is removed first.
+
+Example:
+
+Queue:  1  →  2  →  3
+        ↑           ↑
+      Front        Rear
+
+If we perform pop(), element 1 will be removed first.
+
+Stack
+
+A stack follows the LIFO (Last In First Out) principle.
+
+Example:
+
+Stack:
+
+  3  ← Top
+  2
+  1
+
+The last element inserted is removed first.
+
+Implementing Queue Using Two Stacks
+
+We use two stacks:
+
+Stack 1 (s1) – used for inserting elements.
+Stack 2 (s2) – used for removing and accessing elements.
+
+When s2 is empty, all elements from s1 are transferred to s2.
+
+Example:
+
+s1 = [1, 2, 3]
+
+Transfer:
+
+s1 = []
+s2 = [3, 2, 1]
+
+Now 1 is at the top of s2, so it can be removed first, maintaining FIFO behavior.
+
+4. Algorithm
+Push Operation
+Take the element x.
+Push x into stack s1.
+Pop Operation
+Check whether s2 is empty.
+If s2 is empty, transfer all elements from s1 to s2.
+Remove and return the top element of s2.
+Peek Operation
+Check whether s2 is empty.
+If empty, transfer all elements from s1 to s2.
+Return the top element of s2 without removing it.
+Empty Operation
+Check whether both s1 and s2 are empty.
+If both are empty, return True.
+Otherwise, return False.
+5. Program
+Python
+class MyQueue:
+
+    def __init__(self):
+        self.s1 = []
+        self.s2 = []
+
+    def push(self, x):
+        self.s1.append(x)
+
+    def pop(self):
+        if len(self.s2) == 0:
+            while len(self.s1) > 0:
+                self.s2.append(self.s1.pop())
+
+        return self.s2.pop()
+
+    def peek(self):
+        if len(self.s2) == 0:
+            while len(self.s1) > 0:
+                self.s2.append(self.s1.pop())
+
+        return self.s2[-1]
+
+    def empty(self):
+        return len(self.s1) == 0 and len(self.s2) == 0
+6. Explanation of Program
+Constructor
+def __init__(self):
+    self.s1 = []
+    self.s2 = []
+
+Two empty lists are created to simulate the two stacks.
+
+Push
+def push(self, x):
+    self.s1.append(x)
+
+The new element is added to s1.
+
+Pop
+def pop(self):
+    if len(self.s2) == 0:
+        while len(self.s1) > 0:
+            self.s2.append(self.s1.pop())
+
+    return self.s2.pop()
+
+If s2 is empty, elements are transferred from s1 to s2. This reverses their order and makes the oldest element available at the top of s2.
+
+Peek
+def peek(self):
+    if len(self.s2) == 0:
+        while len(self.s1) > 0:
+            self.s2.append(self.s1.pop())
+
+    return self.s2[-1]
+
+The front element is returned without removing it.
+
+Empty
+def empty(self):
+    return len(self.s1) == 0 and len(self.s2) == 0
+
+Returns True only when both stacks are empty.
+
+7. Sample Input
+["MyQueue", "push", "push", "peek", "pop", "empty"]
+
+[[], [1], [2], [], [], []]
+8. Sample Output
+[null, null, null, 1, 1, false]
+9. Dry Run
+
+Initially:
+
+s1 = []
+s2 = []
+Operation 1: push(1)
+s1 = [1]
+s2 = []
+Operation 2: push(2)
+s1 = [1, 2]
+s2 = []
+Operation 3: peek()
+
+Since s2 is empty, transfer elements:
+
+s1 = []
+s2 = [2, 1]
+
+Top of s2 is 1.
+
+peek() = 1
+Operation 4: pop()
+
+Remove 1 from s2.
+
+s1 = []
+s2 = [2]
+
+pop() = 1
+Operation 5: empty()
+
+Both stacks are not empty because:
+
+s2 = [2]
+
+Therefore:
+
+empty() = False
+10. Complexity Analysis
+Operation	Time Complexity
+push()	O(1)
+pop()	O(1) amortized
+peek()	O(1) amortized
+empty()	O(1)
+Space	O(n)
+
+The transfer of elements between the two stacks can take O(n) for a particular pop() or peek(), but each element is transferred at most once before being removed. Therefore, the amortized complexity is O(1).
+
+11. Advantages
+Implements FIFO behavior using only stack operations.
+push() operation is simple and efficient.
+pop() and peek() are O(1) amortized.
+Requires only two stacks.
+Demonstrates how one data structure can be implemented using another.
+12. Applications
+
+Queues implemented using stacks can be useful for understanding:
+
+Data structure conversion
+CPU scheduling concepts
+Task processing systems
+Breadth First Search concepts
+Request processing
+Buffer management
+Algorithm design
+13. Result
+
+The FIFO Queue was successfully implemented using two stacks. The operations push(), pop(), peek(), and empty() were implemented successfully while following the standard stack operations.
+
+14. Learning Outcome
+
+After completing this experiment, we learned:
+
+The working principle of FIFO queues.
+The working principle of LIFO stacks.
+How to implement a queue using two stacks.
+How element transfer between stacks reverses their order.
+How to analyze time and space complexity.
+The concept of amortized time complexity.
