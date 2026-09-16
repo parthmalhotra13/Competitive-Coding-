@@ -1,0 +1,155 @@
+Experiment: Largest Rectangle in Histogram
+1. Aim
+
+To implement a C++ program using a stack to find the area of the largest rectangle in a histogram.
+
+2. Theory
+
+A histogram consists of bars of different heights, where each bar has a width of 1. The objective is to find the maximum rectangular area that can be formed using one or more consecutive bars.
+
+The area of a rectangle is calculated using:
+
+Area=Height×Width
+
+A monotonic increasing stack is used to solve this problem efficiently. The stack stores the indices of bars in increasing order of height. When a shorter bar is encountered, the taller bars are removed from the stack, and their maximum possible rectangle areas are calculated.
+
+A zero-height bar is added at the end to ensure that all remaining bars are processed.
+
+3. Algorithm
+
+Initialize an empty stack and set maxArea = 0.
+
+Append a zero-height bar to the array.
+
+Traverse the histogram from left to right.
+
+If the stack is empty or the current bar is taller than or equal to the top bar, push its index.
+
+If the current bar is shorter than the top bar:
+
+Pop the top index.
+
+Calculate the height of the popped bar.
+
+Calculate the width using the current index and the new stack top.
+
+Calculate the rectangle area.
+
+Update maxArea.
+
+Repeat until all bars are processed.
+
+Return maxArea.
+
+4. C++ Program
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> st;
+        int maxArea = 0;
+
+        // Add a sentinel bar to process remaining elements
+        heights.push_back(0);
+
+        for (int i = 0; i < heights.size(); i++) {
+
+            while (!st.empty() &&
+                   heights[st.top()] > heights[i]) {
+
+                int h = heights[st.top()];
+                st.pop();
+
+                int width;
+
+                if (st.empty()) {
+                    width = i;
+                } else {
+                    width = i - st.top() - 1;
+                }
+
+                int area = h * width;
+                maxArea = max(maxArea, area);
+            }
+
+            st.push(i);
+        }
+
+        return maxArea;
+    }
+};
+
+int main() {
+    Solution obj;
+
+    vector<int> heights = {2, 1, 5, 6, 2, 3};
+
+    cout << "Largest Rectangle Area: "
+         << obj.largestRectangleArea(heights)
+         << endl;
+
+    return 0;
+}
+5. Sample Input
+heights = [2, 1, 5, 6, 2, 3]
+6. Sample Output
+Largest Rectangle Area: 10
+7. Explanation
+
+The largest rectangle is formed by the bars of heights 5 and 6.
+
+Minimum height = 5
+
+Width = 2
+
+Area=5×2=10
+
+Therefore, the largest rectangle area is 10 square units.
+
+8. Complexity Analysis
+
+Operation
+
+	
+
+Complexity
+
+
+
+
+Time Complexity
+
+	
+
+O(n)
+
+
+
+
+Space Complexity
+
+	
+
+O(n)
+
+Each bar is pushed and popped from the stack at most once.
+
+9. Result
+
+The C++ program was implemented successfully to find the largest rectangle area in a histogram using a monotonic stack.
+
+10. Learning Outcomes
+
+After completing this experiment, students will be able to:
+
+Understand the concept of histograms and rectangular areas.
+
+Implement stacks in C++.
+
+Apply monotonic stack techniques to solve array problems.
+
+Analyze time and space complexity.
+
+Solve the largest rectangle in a histogram efficiently.
